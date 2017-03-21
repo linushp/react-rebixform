@@ -30,7 +30,7 @@ var isProduction = function () {
 var publicPath = isProduction() ? "/" : "/";
 
 
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+//var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 var getLessLoader = function () {
     if (isProduction()) {
