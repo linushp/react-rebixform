@@ -35,16 +35,16 @@ class ExampleApp extends React.Component {
         var onValueChanged = that.onValueChanged;
         return (
             <div>
-                <Field parent={that} onChange={onValueChanged} label="姓名" bind='name' component="text" blurValid="length[1-10]"/>
-                <Field parent={that} onChange={onValueChanged} label="密码" bind='password' component="password" blurValid="length[1-10]"/>
-                <Field parent={that} onChange={onValueChanged} label="性别" bind='sex:sexOptions' component="radioGroup"/>
-                <Field parent={that} onChange={onValueChanged} label="同意协议" bind='agree' component="checkbox"/>
-                <Field parent={that} onChange={onValueChanged} label="支持语言" bind='language:languageOptions' component="checkboxGroup"/>
-                <Field parent={that} onChange={onValueChanged} label="选择国家" bind='country:countryOptions' component="select"/>
-                <Field parent={that} onChange={onValueChanged} label="选择国家" bind='countryMulti:countryOptions' component="selectMulti"/>
-                <Field parent={that} onChange={onValueChanged} label="留言" bind='message' component="textarea"/>
-                <Field parent={that} onChange={onValueChanged} label="生日" bind='birthday' component={InputCalendar}/>
-                <Field parent={that} onChange={onValueChanged} label="参加工作时间" bind='workTime' component="InputCalendar"/>
+                <Field parent={that} label="姓名" bind='name' component="text" blurValid="length[1-10]"/> {that.state.name}
+                <Field parent={that} label="密码" bind='password' component="password" blurValid="length[1-10]"/>
+                <Field parent={that} label="性别" bind='sex:sexOptions' component="radioGroup"/>
+                <Field parent={that} label="同意协议" bind='agree' component="checkbox"/>
+                <Field parent={that} label="支持语言" bind='language:languageOptions' component="checkboxGroup"/>
+                <Field parent={that} label="选择国家" bind='country:countryOptions' component="select"/>
+                <Field parent={that} label="选择国家" bind='countryMulti:countryOptions' component="selectMulti"/>
+                <Field parent={that} label="留言" bind='message' component="textarea"/>{that.state.message}
+                <Field parent={that} label="生日" bind='birthday' component={InputCalendar}/>
+                <Field parent={that} label="参加工作时间" bind='workTime' component="InputCalendar"/>
             </div>
         );
     }
