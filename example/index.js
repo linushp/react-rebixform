@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Field} from '../src/index';
 
-
-var Field = null;
 
 var InputCalendar = null;
 

@@ -6,7 +6,7 @@ var webpack = require('webpack'),
     fs = require('fs'),
     srcPath = path.join(__dirname, '../src');
 
-var CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+//var CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 
 
 var appPath = function (s) {
@@ -25,66 +25,33 @@ var isProduction = function () {
 };
 
 
-
 //打包输出的静态文件的路径
 var publicPath = isProduction() ? "/" : "/";
 
-
-//var ExtractTextPlugin = require("extract-text-webpack-plugin");
-
 var getLessLoader = function () {
-    if (isProduction()) {
-        return {
-            test: /\.less?$/,
-            loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader"),
-            include: __appPath
-        };
-    } else {
-        return {
-            test: /\.less?$/,
-            loaders: ['style-loader', 'css-loader', 'less-loader?{"sourceMap":true}'],
-            include: __appPath
-        };
-    }
+    return {
+        test: /\.less?$/,
+        loaders: ['style-loader', 'css-loader', 'less-loader?{"sourceMap":true}'],
+        include: __appPath
+    };
 };
 
 var getCssLoader = function () {
-    if (isProduction()) {
-        return {
-            test: /\.css$/,
-            loader: ExtractTextPlugin.extract("style-loader", "css-loader")
-        };
-    } else {
-        return {
-            test: /\.css$/,
-            loaders: ['style-loader', 'css-loader']
-        };
-    }
+    return {
+        test: /\.css$/,
+        loaders: ['style-loader', 'css-loader']
+    };
 };
 
-function createWebpackConfig(jsFile, htmlFile, mainFileName) {
+function createWebpackConfig(jsFile, htmlFile) {
+
     var webpackConfig = {
         target: 'web',
         cache: true,
         entry: {
             'main': appPath(jsFile)
         },
-        /**
-         *  Webpack 解析bundle 中请求的module 路径时的设置
-         *  @type {Object}
-         */
-        resolve: {
-            // root: srcPath,
-            extensions: ['.js'],
-            // modulesDirectories: ['node_modules', 'src'],
-            alias: {}
-        },
 
-        /**
-         *  Webpack bundle 的输出设置
-         详情见于 https://webpack.github.io/docs/configuration.html#output-chunkfilename
-         *  @type {Object}
-         */
         output: {
             path: path.join(__appPath, 'dist'),
             publicPath: publicPath,
@@ -93,58 +60,35 @@ function createWebpackConfig(jsFile, htmlFile, mainFileName) {
             library: ['Ubibi', '[name]']
         },
 
-        /**
-         *  Webpack loaders
-         *  @type {Object}
-         */
+
         module: {
             loaders: [
                 {test: /\.js?$/, exclude: /node_modules/, loader: 'babel-loader?cacheDirectory'},
                 {test: /\.styl$/, loader: 'style-loader!css-loader!stylus-loader'},
-                {test: /\.scss$/, loaders: ["style", "css", "sass"]},
                 getLessLoader(), getCssLoader(),
                 {test: /\.(jpg|png|gif)$/, loader: 'url?limit=100000'},
-                {test: /\.(woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000'},
-                {test: /\.rt/, loader: "react-templates-loader"}
+                {test: /\.(woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000'}
             ]
-            // noParse: []
         },
 
 
         externals: {
             "react": "window.React",
-            "ReactDOM": "window.ReactDOM",
             "react-dom": "window.ReactDOM"
         },
 
 
         plugins: [
-            new CaseSensitivePathsPlugin(),
-            // new webpack.optimize.CommonsChunkPlugin({
-            //     name: "shared",
-            //     minChunks: 2
-            // }),
             new HtmlWebpackPlugin({
                 inject: true,
-                //excludeChunks: ['tests'],
                 template: appPath(htmlFile)
             }),
             new webpack.optimize.UglifyJsPlugin({
                 compress: {
                     warnings: false
                 }
-            }),
-            new webpack.NoErrorsPlugin(),
-            // new webpack.DefinePlugin({
-            //     '__DEV__': !isProduction(),
-            //     'process.env.NODE_ENV': isProduction() ? '"production"' : '"development"'
-            // }),
-            // new ExtractTextPlugin("static/[name].[hash].css", {
-            //     disable: false,
-            //     allChunks: true
-            // })
+            })
         ],
-        // debug: isProduction() ? false : true,
         devtool: isProduction() ? null : 'eval-cheap-module-source-map',
         devServer: {
             port: 5001,
@@ -166,16 +110,10 @@ function createWebpackConfig(jsFile, htmlFile, mainFileName) {
         }
     };
 
-
-    if (mainFileName) {
-        webpackConfig.entry = {};
-        webpackConfig.entry[mainFileName] = appPath(jsFile);
-    }
-
     return webpackConfig;
 }
 
 
-var webpackConfig = createWebpackConfig("example/todomvc/index.js", 'example/todomvc/index.html', "main");
-// webpackConfig.createWebpackConfig = createWebpackConfig;
+var webpackConfig = createWebpackConfig("example/index.js", 'example/index.html');
+
 module.exports = webpackConfig;
