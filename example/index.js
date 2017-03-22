@@ -1,10 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Field} from '../src/index';
+import {Field,mixinComponent} from '../src/index';
 
 
-var InputCalendar = null;
+class InputCalendar extends React.Component{
+    onClick = ()=> {
+        var {onChange} = this.props;
+        onChange(new Date().getTime());
+    };
 
+    render() {
+        var props = this.props;
+        return (
+            <div onClick={this.onClick}>::::{props.valueData}</div>
+        );
+    }
+}
+
+
+mixinComponent('InputCalendar',InputCalendar);
 
 class ExampleApp extends React.Component {
 

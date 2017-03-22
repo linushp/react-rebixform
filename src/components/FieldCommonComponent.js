@@ -6,6 +6,31 @@ function isStringEqual(a, b) {
     return ('' + a) === ('' + b);
 }
 
+function shallowEqual(objA, objB) {
+    if (objA === objB) {
+        return true
+    }
+    const keysA = Object.keys(objA);
+    const keysB = Object.keys(objB);
+
+    if (keysA.length !== keysB.length) {
+        return false
+    }
+    // Test for A's keys different from B.
+    const hasOwn = Object.prototype.hasOwnProperty;
+    for (let i = 0; i < keysA.length; i++) {
+        if (!hasOwn.call(objB, keysA[i]) ||
+            objA[keysA[i]] !== objB[keysA[i]]) {
+            return false
+        }
+    }
+    return true
+}
+
+function shallowCompare(component, nextProps, nextState) {
+    return !shallowEqual(component.props, nextProps) || !shallowEqual(component.state, nextState);
+}
+
 
 function isArrayContains(valueArray, obj) {
     for (var i = 0; i < valueArray.length; i++) {
@@ -104,6 +129,11 @@ function renderCheckboxOptions(compProps, that) {
 
 export default class InputComponent extends React.Component {
 
+    shouldComponentUpdate(nextProps, nextState) {
+        var isOk = shallowCompare(this, nextProps, nextState);
+        return isOk;
+    }
+
     onChange = (e1, e2)=> {
         var compProps = this.props;
         var newValue = e1.target.value;
@@ -120,6 +150,7 @@ export default class InputComponent extends React.Component {
 
         onChange(newValue, compProps, e1, e2);
     };
+
 
     onChangeRadio = (e1, e2)=> {
         var compProps = this.props;

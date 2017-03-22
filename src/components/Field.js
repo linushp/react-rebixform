@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import InputComponent from './InputComponent';
+import FieldCommonComponent from './FieldCommonComponent';
 import NotExistComponent from './NotExistComponent';
 
 var isStringEmpty = require('../utils/isStringEmpty');
@@ -10,17 +10,22 @@ var extend = functions.extend;
 
 
 const RenderComponentMap = {
-    'text': InputComponent,
-    'password': InputComponent,
-    'textarea': InputComponent,
-    'select': InputComponent,
-    'selectMulti': InputComponent,
-    'checkbox': InputComponent,
-    'checkboxGroup': InputComponent,
-    'radioGroup': InputComponent
+    'text': FieldCommonComponent,
+    'password': FieldCommonComponent,
+    'textarea': FieldCommonComponent,
+    'select': FieldCommonComponent,
+    'selectMulti': FieldCommonComponent,
+    'checkbox': FieldCommonComponent,
+    'checkboxGroup': FieldCommonComponent,
+    'radioGroup': FieldCommonComponent
 };
 
 function getRenderComponent(component) {
+
+    if (typeof component !== 'string') {
+        return component;
+    }
+
     var rc = RenderComponentMap[component];
     if (rc) {
         return rc;
@@ -32,6 +37,39 @@ function getRenderComponent(component) {
         return rc;
     }
     return NotExistComponent;
+}
+
+
+function getComponentProps(that) {
+    var props = that.props;
+
+    var {parent,bind,onChange,id,label,component,blurValid} = props;
+    id = id || that.fieldId;
+    onChange = onChange || that.onChange;
+
+    var parentState = parent.state;
+
+    var bindArray = bind.split(':');
+    var valueName = bindArray[0];
+    var valueData = parentState[valueName];
+
+
+    var valueOptions;
+    var valueOptionsName = bindArray[1];
+    if (valueOptionsName) {
+        valueOptions = parentState[valueOptionsName];
+    }
+
+    var compProps = extend({}, props, {
+        id: id,
+        onChange: onChange,
+        valueName: valueName,
+        valueData: valueData,
+        valueOptions: valueOptions,
+        valueOptionsName: valueOptionsName
+    });
+
+    return compProps;
 }
 
 
@@ -49,8 +87,9 @@ class Field extends React.Component {
 
 
     onChange = (newValue, compProps, e1, e2)=> {
-        var {valueName} = compProps;
-        var {parent} = this.props;
+        var that = this;
+        var {valueName} = compProps || getComponentProps(that);
+        var {parent} = that.props;
         var changedState = {};
         changedState[valueName] = newValue;
         parent.setState(changedState);
@@ -63,35 +102,13 @@ class Field extends React.Component {
         var props = that.props;
         var {errorMsg} = that.state;
         var {parent,bind,onChange,id,label,component,blurValid} = props;
-        id = id || that.fieldId;
-        onChange = onChange || that.onChange;
 
-        var parentState = parent.state;
-
-        var bindArray = bind.split(':');
-        var valueName = bindArray[0];
-        var valueData = parentState[valueName];
+        var compProps = getComponentProps(that);
         var RenderComponent = getRenderComponent(component);
-
-
-        var valueOptions;
-        var valueOptionsName = bindArray[1];
-        if (valueOptionsName) {
-            valueOptions = parentState[valueOptionsName];
-        }
-
-        var compProps = extend({}, props, {
-            id: id,
-            onChange: onChange,
-            valueName: valueName,
-            valueData: valueData,
-            valueOptions: valueOptions,
-            valueOptionsName: valueOptionsName
-        });
 
         if (!isStringEmpty(label) || !isStringEmpty(blurValid)) {
             return (
-                <div className="rebix_field" >
+                <div className="rebix_field">
                     {label ? <label htmlFor={id}>{label}</label> : null}
                     {errorMsg ? <div className="rebix-error">{errorMsg}</div> : null}
                     <RenderComponent {...compProps} />
