@@ -128,6 +128,7 @@ var InputComponent = React.createClass({
 
     shouldComponentUpdate(nextProps, nextState) {
         var isOk = shallowCompare(this, nextProps, nextState);
+        //console.log('shouldComponentUpdate:',isOk);
         return isOk;
     },
 
