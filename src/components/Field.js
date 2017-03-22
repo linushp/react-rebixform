@@ -1,10 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import InputComponent from './InputComponent';
-import SelectComponent from './SelectComponent';
-import CheckboxComponent from './CheckboxComponent';
-import CheckGroupComponent from './CheckGroupComponent';
-import RadioGroupComponent from './RadioGroupComponent';
 import NotExistComponent from './NotExistComponent';
 
 var isStringEmpty = require('../utils/isStringEmpty');
@@ -18,9 +14,10 @@ const RenderComponentMap = {
     'password': InputComponent,
     'textarea': InputComponent,
     'select': InputComponent,
-    'checkbox': CheckboxComponent,
-    'checkboxGroup': CheckGroupComponent,
-    'radioGroup': RadioGroupComponent
+    'selectMulti': InputComponent,
+    'checkbox': InputComponent,
+    'checkboxGroup': InputComponent,
+    'radioGroup': InputComponent
 };
 
 function getRenderComponent(component) {
@@ -95,7 +92,7 @@ class Field extends React.Component {
         if (!isStringEmpty(label) || !isStringEmpty(blurValid)) {
             return (
                 <div className="rebix_field" >
-                    {label ? <label for={id}>{label}</label> : null}
+                    {label ? <label htmlFor={id}>{label}</label> : null}
                     {errorMsg ? <div className="rebix-error">{errorMsg}</div> : null}
                     <RenderComponent {...compProps} />
                 </div>
