@@ -36,6 +36,7 @@ class ExampleApp extends React.Component {
         return (
             <div>
                 <Field parent={that} label="姓名" bind='name' component="text" blurValid="length[1-10]"/> {that.state.name}
+                <Field parent={that} label="姓名" bind='name' component="text" blurValid="length[1-10]"/> {that.state.name}
                 <br/>
                 <Field parent={that} label="密码" bind='password' component="password" blurValid="length[1-10]"/> {that.state.password}
                 <br/>
