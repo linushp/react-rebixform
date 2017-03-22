@@ -6,9 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:lib": "babel src --out-dir lib",
-    "build:umd": "cross-env NODE_ENV=development webpack src/index.js dist/react-rebixform.js",
-    "build:umd:min": "cross-env NODE_ENV=production webpack src/index.js dist/react-rebixform.min.js",
-    "build": "npm run build:umd && npm run build:umd:min && node ./prepublish",
+    "build:umd": "NODE_ENV=development webpack src/index.js dist/react-rebixform.js",
+    "build:umd:min": "NODE_ENV=production webpack src/index.js dist/react-rebixform.min.js",
+    "build": "npm run build:umd && npm run build:umd:min",
     "watch_example": "NODE_ENV=development  webpack-dev-server --config ./webpack.example.js  --hot --inline --progress --colors"
   },
   "repository": {
@@ -17,9 +17,7 @@
   },
   "keywords": [
     "react",
-    "rebixform",
-    "data",
-    "flow"
+    "rebixform"
   ],
   "author": "ubibi.cn",
   "license": "ISC",
@@ -74,6 +72,7 @@
     "react-dom": "^15.4.2"
   },
   "dependencies": {
+    "glob": "^7.1.1"
   },
   "browserify": {
     "transform": [

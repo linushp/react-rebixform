@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 
 function isStringEqual(a, b) {
@@ -89,14 +88,13 @@ function renderSelectOptions(compProps) {
 function renderRadioOptions(compProps, that) {
     var {valueData,valueOptions,id,className} = compProps;
     var name = id + "_name";
-    className = className || 'rebix_field_';
     var result = [];
     for (var i = 0; i < valueOptions.length; i++) {
         var obj = valueOptions[i];
         var {key,text} = obj;
         var isChecked = isStringEqual(valueData, key);// ('' + valueData) === ("" + key);
         result.push(
-            <label className={className + '_radio_l'} id={id + "_" +key} key={key}>
+            <label className={'rebix_radio_l'} id={id + "_" +key} key={key}>
                 <input type="radio" name={name} value={key} checked={isChecked} onChange={that.onChangeRadio}/>
                 <span>{text}</span>
             </label>
@@ -110,14 +108,13 @@ function renderCheckboxOptions(compProps, that) {
     var {valueData,valueOptions,id,className} = compProps;
     var name = id + "_name";
     valueData = valueData || [];
-    className = className || 'rebix_field_';
     var result = [];
     for (var i = 0; i < valueOptions.length; i++) {
         var obj = valueOptions[i];
         var {key,text} = obj;
         var isChecked = isArrayContains(valueData, key);
         result.push(
-            <label className={className + '_checkbox_l'} id={id + "_" +key} key={key}>
+            <label className={'rebix_checkbox_l'} id={id + "_" +key} key={key}>
                 <input type="checkbox" name={name} value={key} checked={isChecked}
                        onChange={that.onChangeCheckboxGroup}/>
                 <span>{text}</span>
@@ -127,14 +124,14 @@ function renderCheckboxOptions(compProps, that) {
     return result;
 }
 
-export default class InputComponent extends React.Component {
+var InputComponent = React.createClass({
 
     shouldComponentUpdate(nextProps, nextState) {
         var isOk = shallowCompare(this, nextProps, nextState);
         return isOk;
-    }
+    },
 
-    onChange = (e1, e2)=> {
+    onChange(e1, e2) {
         var compProps = this.props;
         var newValue = e1.target.value;
         var {onChange,component} = compProps;
@@ -149,17 +146,17 @@ export default class InputComponent extends React.Component {
         }
 
         onChange(newValue, compProps, e1, e2);
-    };
+    },
 
 
-    onChangeRadio = (e1, e2)=> {
+    onChangeRadio  (e1, e2) {
         var compProps = this.props;
         var newValue = e1.target.value;
         var {onChange} = compProps;
         onChange(newValue, compProps, e1, e2);
-    };
+    },
 
-    onChangeCheckboxGroup = (e1, e2)=> {
+    onChangeCheckboxGroup  (e1, e2){
         var compProps = this.props;
         var {valueData,onChange} = compProps;
         var targetValue = e1.target.value;
@@ -174,14 +171,15 @@ export default class InputComponent extends React.Component {
         }
         newValue = uniqueArray(newValue);
         onChange(newValue, compProps, e1, e2);
-    };
+    },
 
     render() {
 
         var that = this;
         var compProps = this.props;
         var {component,className,valueData,valueName,id} = compProps;
-        className = className || 'rebix_field_' + component;
+        className = className || 'rebix_f';
+        className = className + ' rebix_f_' + component;
 
         if (component === 'textarea') {
             return (
@@ -239,5 +237,8 @@ export default class InputComponent extends React.Component {
                    onChange={that.onChange}/>
         );
 
-    };
-}
+    }
+});
+
+
+module.exports = InputComponent;

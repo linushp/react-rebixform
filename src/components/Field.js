@@ -1,7 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import FieldCommonComponent from './FieldCommonComponent';
-import NotExistComponent from './NotExistComponent';
+var FieldComponent = require('./FieldComponent');
+var NotExistComponent = require('./NotExistComponent');
 
 var isStringEmpty = require('../utils/isStringEmpty');
 var functions = require('../utils/functions');
@@ -10,14 +9,14 @@ var extend = functions.extend;
 
 
 const RenderComponentMap = {
-    'text': FieldCommonComponent,
-    'password': FieldCommonComponent,
-    'textarea': FieldCommonComponent,
-    'select': FieldCommonComponent,
-    'selectMulti': FieldCommonComponent,
-    'checkbox': FieldCommonComponent,
-    'checkboxGroup': FieldCommonComponent,
-    'radioGroup': FieldCommonComponent
+    'text': FieldComponent,
+    'password': FieldComponent,
+    'textarea': FieldComponent,
+    'select': FieldComponent,
+    'selectMulti': FieldComponent,
+    'checkbox': FieldComponent,
+    'checkboxGroup': FieldComponent,
+    'radioGroup': FieldComponent
 };
 
 function getRenderComponent(component) {
@@ -74,44 +73,43 @@ function getComponentProps(that) {
 
 
 var fieldId = 1;
-class Field extends React.Component {
+const Field = React.createClass({
 
-    constructor(props) {
-        super(props);
+    getInitialState() {
         this.fieldId = "rebix_field_" + fieldId;
         fieldId++;
-        this.state = {
-            errorMsg: null
-        };
-    }
+        return {};
+    },
 
 
-    onChange = (newValue, compProps, e1, e2)=> {
+    onChange (newValue, compProps, e1, e2){
         var that = this;
         var {valueName} = compProps || getComponentProps(that);
         var {parent} = that.props;
         var changedState = {};
         changedState[valueName] = newValue;
         parent.setState(changedState);
-    };
+    },
 
 
     render() {
 
         var that = this;
         var props = that.props;
-        var {errorMsg} = that.state;
-        var {parent,bind,onChange,id,label,component,blurValid} = props;
 
+        var {parent,bind,onChange,id,label,component,blurValid,className,errorMsg} = props;
+        className = className || 'rebix_field';
         var compProps = getComponentProps(that);
         var RenderComponent = getRenderComponent(component);
 
         if (!isStringEmpty(label) || !isStringEmpty(blurValid)) {
             return (
-                <div className="rebix_field">
-                    {label ? <label htmlFor={id}>{label}</label> : null}
-                    {errorMsg ? <div className="rebix-error">{errorMsg}</div> : null}
-                    <RenderComponent {...compProps} />
+                <div className={className}>
+                    {errorMsg ? <div className="rebix_f_err">{errorMsg}</div> : null}
+                    {label ? <label className="rebix_f_title" htmlFor={id}>{label}</label> : null}
+                    <div className="rebix_fw">
+                        <RenderComponent {...compProps} />
+                    </div>
                 </div>
             );
         }
@@ -120,6 +118,6 @@ class Field extends React.Component {
         }
     }
 
-}
+});
 
 export default Field;

@@ -49,10 +49,9 @@ class ExampleApp extends React.Component {
         var onValueChanged = that.onValueChanged;
         return (
             <div>
-                <Field parent={that} label="姓名" bind='name' component="text" blurValid="length[1-10]"/> {that.state.name}
-                <Field parent={that} label="姓名" bind='name' component="text" blurValid="length[1-10]"/> {that.state.name}
+                <Field parent={that} label="姓名" bind='name' component="text" /> {that.state.name}
                 <br/>
-                <Field parent={that} label="密码" bind='password' component="password" blurValid="length[1-10]"/> {that.state.password}
+                <Field parent={that} label="密码" bind='password' component="password" /> {that.state.password}
                 <br/>
                 <Field parent={that} label="性别" bind='sex:sexOptions' component="radioGroup"/>{that.state.sex}
                 <br/>
@@ -68,7 +67,7 @@ class ExampleApp extends React.Component {
                 <br/>
                 <Field parent={that} label="生日" bind='birthday' component={InputCalendar}/>{that.state.birthday}
                 <br/>
-                <Field parent={that} label="参加工作时间" bind='workTime' component="InputCalendar"/>
+                <Field parent={that} label="参加工作时间" bind='workTime' component="InputCalendar0"/>
             </div>
         );
     }

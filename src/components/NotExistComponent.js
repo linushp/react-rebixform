@@ -1,17 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
-export default class NotExistComponent extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
-
+var NotExistComponent = React.createClass( {
     render(){
+        var {component} = this.props;
         return (
             <div>
-                the component is not defined
+                NotDefinedComponentError [{component}]
             </div>
         );
-    };
-}
+    }
+});
+
+module.exports = NotExistComponent;
