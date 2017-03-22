@@ -206,12 +206,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	                { className: className },
 	                errorMsg ? _react2['default'].createElement(
 	                    'div',
-	                    { className: 'rebix_f_err' },
+	                    { className: 'rebix_fe' },
 	                    errorMsg
 	                ) : null,
 	                label ? _react2['default'].createElement(
 	                    'label',
-	                    { className: 'rebix_f_title', htmlFor: id },
+	                    { className: 'rebix_ft', htmlFor: id },
 	                    label
 	                ) : null,
 	                _react2['default'].createElement(
@@ -398,6 +398,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState) {
 	        var isOk = shallowCompare(this, nextProps, nextState);
+	        //console.log('shouldComponentUpdate:',isOk);
 	        return isOk;
 	    },
 

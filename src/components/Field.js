@@ -105,8 +105,8 @@ const Field = React.createClass({
         if (!isStringEmpty(label) || !isStringEmpty(blurValid)) {
             return (
                 <div className={className}>
-                    {errorMsg ? <div className="rebix_f_err">{errorMsg}</div> : null}
-                    {label ? <label className="rebix_f_title" htmlFor={id}>{label}</label> : null}
+                    {errorMsg ? <div className="rebix_fe">{errorMsg}</div> : null}
+                    {label ? <label className="rebix_ft" htmlFor={id}>{label}</label> : null}
                     <div className="rebix_fw">
                         <RenderComponent {...compProps} />
                     </div>
